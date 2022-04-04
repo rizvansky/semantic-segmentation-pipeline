@@ -1,14 +1,15 @@
 pipeline:
   name: SemanticSegmentationPipeline
   encoder:
-    name: EfficientNetModel
+    name: get_encoder
     params:
-      model_name: efficientnet-b0
+      name: efficientnet-b0
       in_channels: 3
+      depth: 5
+      weights: imagenet
   decoder:
     name: UnetDecoder
     params:
-      encoder_channels: [3, 32, 24, 40, 112, 320]
       decoder_channels: [256, 128, 64, 32, 16]
       n_blocks: 5
       use_batchnorm: True
@@ -27,9 +28,9 @@ pipeline:
       upsampling:
         name: UpsamplingBilinear2d
         params:
-          scale_factor: 2
-      activation: null
-
-  loss:
-    name: DiceLoss
-    params:
+          scale_factor: 1
+      activation:
+        name: Activation
+        params:
+          name: null
+          params:
