@@ -8,11 +8,11 @@ pipeline:
   decoder:
     name: UnetDecoder
     params:
-      encoder_channels: 1280
-      decoder_channels: 1280
+      encoder_channels: [3, 32, 24, 40, 112, 320]
+      decoder_channels: [256, 128, 64, 32, 16]
       n_blocks: 5
       use_batchnorm: True
-      attention_type: None
+      attention_type: null
       center: False
   segmentation_head:
     name: SegmentationHead
@@ -20,15 +20,15 @@ pipeline:
       conv2d:
         name: Conv2d
         params:
-          in_channels: 3
-          out_channels: 64
+          in_channels: 16
+          out_channels: 1
           kernel_size: 3
           padding: 1
       upsampling:
         name: UpsamplingBilinear2d
         params:
           scale_factor: 2
-      activation: None
+      activation: null
 
   loss:
     name: DiceLoss
