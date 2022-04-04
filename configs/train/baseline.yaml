@@ -1,0 +1,35 @@
+pipeline:
+  name: SemanticSegmentationPipeline
+  encoder:
+    name: EfficientNetModel
+    params:
+      model_name: efficientnet-b0
+      in_channels: 3
+  decoder:
+    name: UnetDecoder
+    params:
+      encoder_channels: 1280
+      decoder_channels: 1280
+      n_blocks: 5
+      use_batchnorm: True
+      attention_type: None
+      center: False
+  segmentation_head:
+    name: SegmentationHead
+    params:
+      conv2d:
+        name: Conv2d
+        params:
+          in_channels: 3
+          out_channels: 64
+          kernel_size: 3
+          padding: 1
+      upsampling:
+        name: UpsamplingBilinear2d
+        params:
+          scale_factor: 2
+      activation: None
+
+  loss:
+    name: DiceLoss
+    params:
