@@ -1,8 +1,9 @@
 from segmentation_models_pytorch.base import SegmentationModel
-from pipeline.registry import registry
+from pipe.registry import registry
 
 
-class GenericSegmentationModel(SegmentationModel):
+@registry.register
+class BaseSemanticSegmentationModel(SegmentationModel):
     def __init__(self, encoder, decoder, segmentation_head, classification_head=None):
         super().__init__()
 

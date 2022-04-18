@@ -1,36 +1,38 @@
 pipeline:
-  name: SemanticSegmentationPipeline
-  encoder:
-    name: get_encoder
+  name: BaseSemanticSegmentationPipeline
+  model:
+    name: BaseSemanticSegmentationModel
     params:
-      name: efficientnet-b0
-      in_channels: 3
-      depth: 5
-      weights: imagenet
-  decoder:
-    name: UnetDecoder
-    params:
-      decoder_channels: [256, 128, 64, 32, 16]
-      n_blocks: 5
-      use_batchnorm: True
-      attention_type: null
-      center: False
-  segmentation_head:
-    name: SegmentationHead
-    params:
-      conv2d:
-        name: Conv2d
+      encoder:
+        name: get_encoder
         params:
-          in_channels: 16
-          out_channels: 1
-          kernel_size: 3
-          padding: 1
-      upsampling:
-        name: UpsamplingBilinear2d
+          name: efficientnet-b0
+          in_channels: 3
+          depth: 5
+          weights: imagenet
+      decoder:
+        name: UnetDecoder
         params:
-          scale_factor: 1
-      activation:
-        name: Activation
+          encoder_channels: [3, 32, 24, 40, 112, 320]
+          decoder_channels: [256, 128, 64, 32, 16]
+          n_blocks: 5
+          use_batchnorm: True
+          attention_type: null
+          center: False
+      segmentation_head:
+        name: SegmentationHead
         params:
-          name: null
-          params:
+          conv2d:
+            name: Conv2d
+            params:
+              in_channels: 16
+              out_channels: 1
+              kernel_size: 3
+              padding: 1
+          upsampling:
+            name: UpsamplingBilinear2d
+            params:
+              scale_factor: 1
+          activation:
+            name: ReLU
+            params:

@@ -1,5 +1,5 @@
 import torch.nn as nn
-from pipeline.registry import registry
+from pipe.registry import registry
 
 
 @registry.register
